@@ -20,9 +20,6 @@ public class ValidateBST {
     static class TreeNode {
         int val;
         TreeNode left, right;
-        public TreeNode(int val) {
-            this.val = val;
-            this.left = null;
-        }
+        public TreeNode(int val) {this.val = val;}
     }
 }
