@@ -16,8 +16,7 @@ public class LevelOrderTraversal {
         root.right.left.left = new TreeNode(7);
         root.right.left.right = new TreeNode(8);
 
-//        System.out.println(levelOrder(root));
-        Math.log10(4);
+        System.out.println(levelOrder(root));
     }
 
     static List<List<Integer>> levelOrder(TreeNode root) {
