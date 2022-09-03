@@ -44,6 +44,7 @@ public class AVLTrees {
     static TreeNode insert(TreeNode root, int key) {
         if (root == null) return new TreeNode(key);
 
+        // Normal searching / inserting as BST
         if (key < root.val) {
             root.left = insert(root.left, key);
         }else if (key > root.val) {
@@ -52,6 +53,7 @@ public class AVLTrees {
             return root;
         }
 
+        // Updating height of ancestor node
         root.height = 1 + Math.max(height(root.left), height(root.right));
 
         int balance = getBalance(root);
