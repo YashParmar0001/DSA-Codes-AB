@@ -8,7 +8,9 @@ public class Implementation {
         heap.insert(15);
         heap.insert(12);
         heap.insert(14);
-        heap.insert(2);
+        heap.insert(22);
+        System.out.println(heap.extractMin());
+//        System.out.println(heap.extractMin());
         heap.printHeap();
     }
 }
@@ -44,6 +46,32 @@ class MinHeap {
                 i = parent;
             }else return;
         }
+    }
+
+    int extractMin() throws Exception {
+        if (n == 0) throw new Exception("Heap is Empty!");
+
+        int result = arr[1];
+        arr[1] = arr[n];
+        n--;
+        int i = 1;
+        while (i <= n) {
+            int left = 2 * i;
+            int right = 2 * i + 1;
+
+            int smallest = i;
+            if (left <= n && arr[left] < arr[smallest]) {
+                smallest = left;
+            }
+            if (right <= n && arr[right] < arr[smallest]) {
+                smallest = right;
+            }
+            if (smallest != i) {
+                swap(smallest, i);
+                i = smallest;
+            }else break;
+        }
+        return result;
     }
 
     public void printHeap() {
