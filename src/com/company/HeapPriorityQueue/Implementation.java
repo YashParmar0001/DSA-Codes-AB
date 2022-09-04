@@ -118,6 +118,7 @@ class MaxHeap {
         }
     }
 
+
     public void insert(int key) throws Exception {
         if (n == capacity - 1) throw new Exception("Heap is Full!");
 
