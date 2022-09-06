@@ -1,45 +1,50 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-
 public class Streak {
     public static void main(String[] args) {
-
+        TreeNode root = new TreeNode(0);
+        root.right = new TreeNode(0);
+        root.right.right = new TreeNode(0);
+        root.right.left = new TreeNode(0);
+        preOrder(pruneTree(root));
     }
 
-    static List<List<Integer>> levelOrder(Node root) {
-        List<List<Integer>> ans = new ArrayList<>();
-        if (root == null) return ans;
-        Node current;
-        Queue<Node> queue = new LinkedList<>();
-        List<Integer> currList = new ArrayList<>();
-        queue.offer(root);
-        queue.offer(null);
+    static TreeNode pruneTree(TreeNode root) {
+        if (root == null) return root;
+        isPresent(root);
+        if (root.val == 0 && root.left == null && root.right == null) return null;
+        return root;
+    }
 
-        while (!queue.isEmpty()) {
-            current = queue.poll();
-            if (current == null) {
-                ans.add(currList);
-                if (queue.isEmpty()) return ans;
-                queue.offer(null);
-                currList = new ArrayList<>();
-            }else {
-                currList.add(current.val);
-                for (Node node : current.children) {
-                    queue.offer(node);
-                }
-            }
+    static boolean isPresent(TreeNode root) {
+        if (root == null) return false;
+
+        if (root.left == null && root.right == null) {
+            return root.val == 1;
         }
-        return ans;
+
+        boolean left, right;
+        left = isPresent(root.left);
+
+        right = isPresent(root.right);
+
+        if (!left) root.left = null;
+        if (!right) root.right = null;
+
+        return left || right || root.val == 1;
     }
 
-    static class Node {
-        int val;
-        List<Node> children;
+    static void preOrder(TreeNode root) {
+        if (root == null) return;
 
-        public Node(int val) {this.val = val;}
+        System.out.print(root.val + ", ");
+        preOrder(root.left);
+        preOrder(root.right);
+    }
+
+    static class TreeNode {
+        int val;
+        TreeNode left, right;
+        public TreeNode(int val) {this.val = val;}
     }
 }
