@@ -3,9 +3,9 @@ import com.company.LinkedListClass.Basics.KthNodeFromEnd.Node;
 
 public class BubbleSortList {
     public static void main(String[] args) {
-        Node head = new Node(40);
+        Node head = new Node(50);
         head.next = new Node(20);
-        head.next.next = new Node(50);
+        head.next.next = new Node(40);
         head.next.next.next = new Node(30);
         printLL(sortLL(head));
     }
