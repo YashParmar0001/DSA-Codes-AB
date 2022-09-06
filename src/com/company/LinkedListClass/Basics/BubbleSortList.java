@@ -3,23 +3,11 @@ import com.company.LinkedListClass.Basics.KthNodeFromEnd.Node;
 
 public class BubbleSortList {
     public static void main(String[] args) {
-        Node n1 = new Node(3);
-        Node n2 = new Node(2);
-        Node n3 = new Node(4);
-        Node n4 = new Node(1);
-        Node n5 = new Node(7);
-        Node n6 = new Node(6);
-        Node n7 = new Node(5);
-
-        n1.next = n2;
-        n2.next = n3;
-        n3.next = n4;
-        n4.next = n5;
-        n5.next = n6;
-        n6.next = n7;
-
-        Node head = bubbleSort(n1);
-        printLL(head);
+        Node head = new Node(40);
+        head.next = new Node(20);
+        head.next.next = new Node(50);
+        head.next.next.next = new Node(30);
+        printLL(sortLL(head));
     }
 
     static Node bubbleSort(Node head) {
@@ -34,6 +22,37 @@ public class BubbleSortList {
                 node_j = node_j.next;
             }
             node_i = node_i.next;
+        }
+        return head;
+    }
+
+    static Node sortLL(Node head) {
+        if (head == null || head.next == null) return head;
+        int length = 4;
+        for (int i = 0; i < length-1; i++) {
+            Node previous = null;
+            Node current = head;
+            Node nextNode = current.next;
+
+            while (current.next != null) {
+                if (current.data > current.next.data) {
+                    if (previous == null) {
+                        current.next = nextNode.next;
+                        nextNode.next = current;
+                        previous = nextNode;
+                        head = previous;
+                    }else {
+                        nextNode = current.next;
+                        current.next = nextNode.next;
+                        previous.next = nextNode;
+                        nextNode.next = current;
+                        previous = nextNode;
+                    }
+                }else {
+                    previous = current;
+                    current = current.next;
+                }
+            }
         }
         return head;
     }
