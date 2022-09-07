@@ -1,37 +1,27 @@
 package com.company;
 
+import java.util.ArrayDeque;
+
 public class Streak {
     public static void main(String[] args) {
-        TreeNode root = new TreeNode(0);
-        root.right = new TreeNode(0);
-        root.right.right = new TreeNode(0);
-        root.right.left = new TreeNode(0);
-        preOrder(pruneTree(root));
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.right = new TreeNode(4);
+        System.out.println(tree2str(root));
     }
 
-    static TreeNode pruneTree(TreeNode root) {
-        if (root == null) return root;
-        isPresent(root);
-        if (root.val == 0 && root.left == null && root.right == null) return null;
-        return root;
-    }
-
-    static boolean isPresent(TreeNode root) {
-        if (root == null) return false;
-
-        if (root.left == null && root.right == null) {
-            return root.val == 1;
+    public static String tree2str(TreeNode root) {
+        if (root == null) {
+            return "";
         }
-
-        boolean left, right;
-        left = isPresent(root.left);
-
-        right = isPresent(root.right);
-
-        if (!left) root.left = null;
-        if (!right) root.right = null;
-
-        return left || right || root.val == 1;
+        if (root.left == null && root.right == null) {
+            return root.val + "";
+        }
+        if (root.right == null) {
+            return root.val + "(" + tree2str(root.left) + ")";
+        }
+        return root.val + "(" + tree2str(root.left) + ")" + "(" + tree2str(root.right) + ")";
     }
 
     static void preOrder(TreeNode root) {
