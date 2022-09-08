@@ -1,35 +1,38 @@
 package com.company;
 
-import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Streak {
     public static void main(String[] args) {
-        TreeNode root = new TreeNode(1);
-        root.left = new TreeNode(2);
-        root.right = new TreeNode(3);
-        root.left.right = new TreeNode(4);
-        System.out.println(tree2str(root));
+
     }
 
-    public static String tree2str(TreeNode root) {
-        if (root == null) {
-            return "";
-        }
-        if (root.left == null && root.right == null) {
-            return root.val + "";
-        }
-        if (root.right == null) {
-            return root.val + "(" + tree2str(root.left) + ")";
-        }
-        return root.val + "(" + tree2str(root.left) + ")" + "(" + tree2str(root.right) + ")";
-    }
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+        TreeNode current = root;
 
-    static void preOrder(TreeNode root) {
-        if (root == null) return;
+        while (current != null) {
+            if (current.left == null) {
+                ans.add(current.val);
+                current = current.right;
+            }else {
+                TreeNode temp = current.left;
+                while (temp.right != null && temp.right != current) {
+                    temp = temp.right;
+                }
 
-        System.out.print(root.val + ", ");
-        preOrder(root.left);
-        preOrder(root.right);
+                if (temp.right == current) {
+                    temp.right = null;
+                    ans.add(current.val);
+                    current = current.right;
+                }else {
+                    temp.right = current;
+                    current = current.left;
+                }
+            }
+        }
+        return ans;
     }
 
     static class TreeNode {
