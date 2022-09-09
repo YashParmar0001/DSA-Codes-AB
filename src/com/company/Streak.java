@@ -1,43 +1,25 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 public class Streak {
     public static void main(String[] args) {
-
+        int[][] properties = {{2,2}, {3,3}};
+        System.out.println(numberOfWeakCharacters(properties));
     }
 
-    public List<Integer> inorderTraversal(TreeNode root) {
-        List<Integer> ans = new ArrayList<>();
-        TreeNode current = root;
-
-        while (current != null) {
-            if (current.left == null) {
-                ans.add(current.val);
-                current = current.right;
-            }else {
-                TreeNode temp = current.left;
-                while (temp.right != null && temp.right != current) {
-                    temp = temp.right;
-                }
-
-                if (temp.right == current) {
-                    temp.right = null;
-                    ans.add(current.val);
-                    current = current.right;
-                }else {
-                    temp.right = current;
-                    current = current.left;
-                }
+    static int numberOfWeakCharacters(int[][] properties) {
+        Arrays.sort(properties, (a, b) -> (b[0] == a[0]) ? (a[1] - b[1]) : b[0] - a[0]);
+//        Arrays.sort(properties, (a, b) -> b[1]-a[1]);
+        int ans = 0;
+        int max = 0;
+        for (int[] row : properties) System.out.println(Arrays.toString(row));
+        for (int[] property : properties) {
+            if (property[1] < max) {
+                ans++;
             }
+            max = Math.max(max, property[1]);
         }
         return ans;
-    }
-
-    static class TreeNode {
-        int val;
-        TreeNode left, right;
-        public TreeNode(int val) {this.val = val;}
     }
 }
