@@ -2,7 +2,7 @@ package com.company;
 
 import java.util.Arrays;
 
-public class Streak {
+public class LeetCodeStreak {
     public static void main(String[] args) {
         int[][] properties = {{2,2}, {3,3}};
         System.out.println(numberOfWeakCharacters(properties));
