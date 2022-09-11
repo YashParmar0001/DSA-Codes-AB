@@ -1,24 +1,40 @@
 package com.company;
 
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LeetCodeStreak {
     public static void main(String[] args) {
-        int[][] properties = {{2,2}, {3,3}};
-        System.out.println(numberOfWeakCharacters(properties));
+        int[] nums = {0, 1, 2, -4};
+        System.out.println(mostFrequentEven(nums));
     }
 
-    static int numberOfWeakCharacters(int[][] properties) {
-        Arrays.sort(properties, (a, b) -> (b[0] == a[0]) ? (a[1] - b[1]) : b[0] - a[0]);
-//        Arrays.sort(properties, (a, b) -> b[1]-a[1]);
-        int ans = 0;
-        int max = 0;
-        for (int[] row : properties) System.out.println(Arrays.toString(row));
-        for (int[] property : properties) {
-            if (property[1] < max) {
-                ans++;
+    static int mostFrequentEven(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            if (!map.containsKey(num)) {
+                if (num % 2 == 0) map.put(num, 1);
+            }else {
+                int x = map.get(num);
+                map.put(num, x+1);
             }
-            max = Math.max(max, property[1]);
+        }
+        int ans = -1;
+        int prevKey = -1;
+        int prevValue = -1;
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            int key = entry.getKey();
+            int value = entry.getValue();
+            if (prevValue == value) {
+                if (prevKey > key) {
+                    ans = key;
+                    prevKey = key;
+                }
+            }else if (prevValue < value) {
+                prevKey = key;
+                prevValue = value;
+                ans = key;
+            }
         }
         return ans;
     }
