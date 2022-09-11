@@ -1,12 +1,33 @@
 package com.company;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class LeetCodeStreak {
     public static void main(String[] args) {
-        int[] nums = {0, 1, 2, -4};
-        System.out.println(mostFrequentEven(nums));
+        String s = "s";
+        System.out.println(partitionString(s));
+    }
+
+    static int partitionString(String s) {
+        if (s.length() < 2) return 1;
+        Set<Character> set = new HashSet<>();
+        int i = 0, j = 1;
+        char[] str = s.toCharArray();
+        set.add(str[i]);
+        int ans = 0;
+        while (j < s.length()) {
+            if (!set.contains(str[j])) {
+                set.add(str[j]);
+                j++;
+            } else {
+                ans++;
+                i = j;
+                j = i + 1;
+                set = new HashSet<>();
+                set.add(str[i]);
+            }
+        }
+        return ans + 1;
     }
 
     static int mostFrequentEven(int[] nums) {
@@ -14,9 +35,9 @@ public class LeetCodeStreak {
         for (int num : nums) {
             if (!map.containsKey(num)) {
                 if (num % 2 == 0) map.put(num, 1);
-            }else {
+            } else {
                 int x = map.get(num);
-                map.put(num, x+1);
+                map.put(num, x + 1);
             }
         }
         int ans = -1;
@@ -30,12 +51,12 @@ public class LeetCodeStreak {
                     ans = key;
                     prevKey = key;
                 }
-            }else if (prevValue < value) {
+            } else if (prevValue < value) {
                 prevKey = key;
                 prevValue = value;
                 ans = key;
             }
         }
-        return ans;
+        return ans + 1;
     }
 }
