@@ -1,51 +1,37 @@
 package com.company;
 
+import java.util.Collections;
+import java.util.PriorityQueue;
+
 public class GFGStreak {
     public static void main(String[] args) {
-
+        int[] arr = {2, 4, 6, 5, 4};
+        int n = arr.length;
+        System.out.println(minimumNumber(n, arr));
     }
 
-    public int findOccurrence(char mat[][], String target)
-    {
-        // Write your code here
-        int n=mat.length;
-        int m=mat[0].length;
-        int ans=0;
-        int cnt=0;
-        for(int i=0;i<n;i++){
-            for(int j=0;j<m;j++){
-                if(mat[i][j]==target.charAt(0)){
-                    cnt=fun(mat,target,1,i,j,-1,-1,n,m);
-                    ans+=cnt;
-                }
+    static int minimumNumber(int n, int[] arr) {
+        if (n <= 1) return arr[0];
+
+        PriorityQueue<Integer> queue = new PriorityQueue<>(Collections.reverseOrder());
+        for (int e : arr) {
+            queue.offer(e);
+        }
+
+        int max = -1, min = -1;
+        int ans = Integer.MIN_VALUE;
+        while (!queue.isEmpty()) {
+            max = queue.poll();
+            min = queue.poll();
+            if (min == 0) {
+                ans = Math.max(ans, max);
+                return ans;
             }
+            int num = max - min;
+//            if (num == 0) return ans;
+//            ans = Math.max(ans, max);
+            queue.offer(num); queue.offer(min);
         }
-        return ans;
-    }
-    int dx[]={0,0,-1,1};
-    int dy[]={-1,1,0,0};
-    public int fun(char mat[][],String s,int in,int i,int j,int previ,int prevj,int n,int m)
-    {
-        if(in==s.length()){
-            return 1;
-        }
-        int ans=0;
-
-        char temp=mat[i][j];
-        mat[i][j]='*';
-
-        for(int k=0;k<4;k++){
-            int nx=i+dx[k];
-            int ny=j+dy[k];
-            if(nx==previ && ny==prevj)continue;
-
-            if(nx>=0 && nx<n && ny>=0 && ny<m && mat[nx][ny]==s.charAt(in)){
-                ans+=fun(mat,s,in+1,nx,ny,i,j,n,m);
-            }
-        }
-
-        mat[i][j]=temp;
-
         return ans;
     }
 }
