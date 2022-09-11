@@ -4,8 +4,43 @@ import java.util.*;
 
 public class LeetCodeStreak {
     public static void main(String[] args) {
-        String s = "s";
-        System.out.println(partitionString(s));
+        int[][] intervals = {{5,10},{6,8},{1,5},{2,3},{1,10}};
+        System.out.println(minGroups(intervals));
+    }
+
+    static int minGroups(int[][] intervals) {
+        if (intervals.length < 2) return 1;
+        Arrays.sort(intervals);
+        int ans = 0;
+        boolean[] isValid = new boolean[intervals.length];
+        Arrays.fill(isValid, true);
+        int i = 0, j = -1;
+        while (i < intervals.length-1 && j < intervals.length) {
+            if (!isValid[i]) {
+                i++;
+                continue;
+            }
+            j = i + 1;
+            int[] interval = intervals[i];
+            boolean flag = false;
+            int count = 0;
+            while (j < intervals.length) {
+                if (isValid[j] && isValidGroup(interval, intervals[j])) {
+                    interval = new int[]{Math.min(interval[0], intervals[j][0]),
+                            Math.max(interval[1], intervals[j][1])};
+                    isValid[j] = false;
+                    count++;
+                }
+                j++;
+            }
+            if (count != 0) ans++;
+//            count = 0;
+        }
+        return ans;
+    }
+
+    static boolean isValidGroup(int[] a, int[] b) {
+        return !(a[0] == b[0] || a[1] == b[0] || a[0] == b[1] || a[1] == b[1]);
     }
 
     static int partitionString(String s) {
