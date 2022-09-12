@@ -1,97 +1,39 @@
 package com.company;
 
-import java.util.*;
+import java.util.Arrays;
 
 public class LeetCodeStreak {
     public static void main(String[] args) {
-        int[][] intervals = {{5,10},{6,8},{1,5},{2,3},{1,10}};
-        System.out.println(minGroups(intervals));
+        int[] tokens = {26};
+        int power = 51;
+        System.out.println(bagOfTokensScore(tokens, power));
     }
 
-    static int minGroups(int[][] intervals) {
-        if (intervals.length < 2) return 1;
-        Arrays.sort(intervals);
-        int ans = 0;
-        boolean[] isValid = new boolean[intervals.length];
-        Arrays.fill(isValid, true);
-        int i = 0, j = -1;
-        while (i < intervals.length-1 && j < intervals.length) {
-            if (!isValid[i]) {
-                i++;
-                continue;
-            }
-            j = i + 1;
-            int[] interval = intervals[i];
-            boolean flag = false;
-            int count = 0;
-            while (j < intervals.length) {
-                if (isValid[j] && isValidGroup(interval, intervals[j])) {
-                    interval = new int[]{Math.min(interval[0], intervals[j][0]),
-                            Math.max(interval[1], intervals[j][1])};
-                    isValid[j] = false;
-                    count++;
+    static int bagOfTokensScore(int[] tokens, int power) {
+        if (tokens.length == 0) return 0;
+        if (tokens.length == 1) {
+            if (power >= tokens[0]) {
+                return 1;
+            }else return 0;
+        }
+        int score = 0;
+        Arrays.sort(tokens);
+        int left = 0, right = tokens.length-1;
+
+        while (left <= right) {
+            if (tokens[left] <= power) {
+                power -= tokens[left];
+                score++;
+                left++;
+            }else if (score >= 1 && tokens[right] >= power) {
+                if (left == right) {
+                    return score;
                 }
-                j++;
-            }
-            if (count != 0) ans++;
-//            count = 0;
+                power += tokens[right];
+                score--;
+                right--;
+            }else return score;
         }
-        return ans;
-    }
-
-    static boolean isValidGroup(int[] a, int[] b) {
-        return !(a[0] == b[0] || a[1] == b[0] || a[0] == b[1] || a[1] == b[1]);
-    }
-
-    static int partitionString(String s) {
-        if (s.length() < 2) return 1;
-        Set<Character> set = new HashSet<>();
-        int i = 0, j = 1;
-        char[] str = s.toCharArray();
-        set.add(str[i]);
-        int ans = 0;
-        while (j < s.length()) {
-            if (!set.contains(str[j])) {
-                set.add(str[j]);
-                j++;
-            } else {
-                ans++;
-                i = j;
-                j = i + 1;
-                set = new HashSet<>();
-                set.add(str[i]);
-            }
-        }
-        return ans + 1;
-    }
-
-    static int mostFrequentEven(int[] nums) {
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int num : nums) {
-            if (!map.containsKey(num)) {
-                if (num % 2 == 0) map.put(num, 1);
-            } else {
-                int x = map.get(num);
-                map.put(num, x + 1);
-            }
-        }
-        int ans = -1;
-        int prevKey = -1;
-        int prevValue = -1;
-        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-            int key = entry.getKey();
-            int value = entry.getValue();
-            if (prevValue == value) {
-                if (prevKey > key) {
-                    ans = key;
-                    prevKey = key;
-                }
-            } else if (prevValue < value) {
-                prevKey = key;
-                prevValue = value;
-                ans = key;
-            }
-        }
-        return ans + 1;
+        return score;
     }
 }
