@@ -7,6 +7,7 @@ public class LeetCodeStreak {
         int[] tokens = {26};
         int power = 51;
         System.out.println(bagOfTokensScore(tokens, power));
+
     }
 
     static int bagOfTokensScore(int[] tokens, int power) {
