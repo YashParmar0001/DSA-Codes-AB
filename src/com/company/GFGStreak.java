@@ -1,34 +1,64 @@
 package com.company;
 
+import java.util.ArrayList;
+
 public class GFGStreak {
     public static void main(String[] args) {
 
     }
 
-    public int MinimumExchange(char[][] matrix)
+    static ArrayList<Integer> arr = new ArrayList<>();
+    static int i=0;
+    public static void convertToMaxHeapUtil(Node root)
     {
-        // Code here
-        int x = 0, y = 0;
-        for(int i = 0; i < matrix.length; i++){
-            for(int j = 0; j < matrix[0].length; j++){
-                if((i%2 == 0 && j%2 == 0) || ((i&1)!=0 && (j&1)!=0)){
-                    if(matrix[i][j] == 'A')
-                        x++;
-                }
-                else{
-                    if(matrix[i][j] == 'B')
-                        x++;
-                }
-                if((i%2 == 0 && j%2 == 0) || ((i&1)!=0 && (j&1)!=0)){
-                    if(matrix[i][j] == 'B')
-                        y++;
-                }
-                else{
-                    if(matrix[i][j] == 'A')
-                        y++;
-                }
-            }
+        i = 0;
+        arr.clear();
+        // inorder traversal to populate 'arr'
+        inorderTraversal(root);
+
+        // BST to MAX HEAP conversion
+        BSTToMaxHeap(root);
+    }
+
+    // Function for the inorder traversal of the tree
+    // so as to store the node values in 'arr' in
+    // sorted order
+    static void inorderTraversal(Node root)
+    {
+        if (root == null)
+            return;
+
+        // first recur on left subtree
+        inorderTraversal(root.left);
+
+        // then copy the data of the node
+        arr.add(root.data);
+
+        // now recur for right subtree
+        inorderTraversal(root.right);
+    }
+
+    static void BSTToMaxHeap(Node root)
+    {
+        if (root == null)
+            return;
+
+        // recur on left subtree
+        BSTToMaxHeap(root.left);
+
+        // recur on right subtree
+        BSTToMaxHeap(root.right);
+
+        // copy data at index 'i' of 'arr' to
+        // the node
+        root.data = arr.get(i++);
+    }
+
+    static class Node {
+        int data;
+        Node left, right;
+        public Node(int data) {
+            this.data = data;
         }
-        return Math.min(x, y);
     }
 }
