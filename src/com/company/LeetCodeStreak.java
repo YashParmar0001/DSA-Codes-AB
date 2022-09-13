@@ -4,37 +4,36 @@ import java.util.Arrays;
 
 public class LeetCodeStreak {
     public static void main(String[] args) {
-        int[] tokens = {26};
-        int power = 51;
-        System.out.println(bagOfTokensScore(tokens, power));
-
+        System.out.println(validUtf8(new int[]{10}));
     }
 
-    static int bagOfTokensScore(int[] tokens, int power) {
-        if (tokens.length == 0) return 0;
-        if (tokens.length == 1) {
-            if (power >= tokens[0]) {
-                return 1;
-            }else return 0;
-        }
-        int score = 0;
-        Arrays.sort(tokens);
-        int left = 0, right = tokens.length-1;
+    static boolean validUtf8(int[] data) {
+        return util(data, 0);
+    }
 
-        while (left <= right) {
-            if (tokens[left] <= power) {
-                power -= tokens[left];
-                score++;
-                left++;
-            }else if (score >= 1 && tokens[right] >= power) {
-                if (left == right) {
-                    return score;
-                }
-                power += tokens[right];
-                score--;
-                right--;
-            }else return score;
+    static boolean util(int[] data, int index) {
+        if (index >= data.length) return true;
+
+        int mask = 1;
+        mask <<= 7;
+        int count = 0;
+        int i = 0;
+//        if ((data[index] & mask) == 0) return true;
+        while (i < 5) {
+            if ((data[index] & mask) == mask) {
+                count++;
+            }else if ((data[index] & mask) == 0) break;
+            mask >>= 1;
+            i++;
         }
-        return score;
+        if (count == 0) return util(data, index+1);
+        if (count == 1) return false;
+        if (count > 4) return false;
+        if (data.length-index < count) return false;
+        int j;
+        for (j = index+1; j < index+count; j++) {
+            if ((data[j] & 128) != 128) return false;
+        }
+        return util(data, j);
     }
 }
