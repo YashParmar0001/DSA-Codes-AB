@@ -1,47 +1,46 @@
 package com.company;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class LeetCodeStreak {
     public static void main(String[] args) {
-        TreeNode root = new TreeNode(2);
-        root.left = new TreeNode(1);
-        root.right = new TreeNode(1);
-        root.left.left = new TreeNode(1);
-        root.left.right = new TreeNode(3);
-        root.left.right.right = new TreeNode(1);
-        System.out.println(pseudoPalindromicPaths(root));
+        int[] changed = {4,4,16,20,8,8,2,10};
+        System.out.println(Arrays.toString(findOriginalArray(changed)));
     }
 
-    static int pseudoPalindromicPaths (TreeNode root) {
-        Set<Integer> set = new HashSet<>();
-        util2(root, set);
-        return ans;
-    }
-
-    static int ans = 0;
-
-    static void util2(TreeNode root, Set<Integer> set) {
-        if (root == null) return;
-//        Set<Integer> newSet = new HashSet<>(set);
-
-        if (set.contains(root.val)) set.remove(root.val);
-        else set.add(root.val);
-
-        if (root.left == null && root.right == null) {
-            if (set.size() == 0 || set.size() == 1) {
-                ans += 1;
+    static int[] findOriginalArray(int[] changed) {
+        if (changed.length%2 == 1) return new int[]{};
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int e : changed) {
+            if (!map.containsKey(e)) {
+                map.put(e, 1);
+            }else {
+                int freq = map.get(e);
+                map.put(e, freq+1);
             }
         }
-        util2(root.left, new HashSet<>(set)); util2(root.right, new HashSet<>(set));
-    }
-
-    static class TreeNode {
-        int val;
-        TreeNode left, right;
-        public TreeNode(int val) {
-            this.val = val;
+        int[] ans = new int[changed.length/2]; int index = 0;
+        Arrays.sort(changed);
+        for (int e : changed) {
+            if (map.containsKey(e)) {
+                int freq1 = map.get(e);
+                if (map.containsKey(e*2)) {
+                    if (e == e*2) {
+                        if (freq1-2 == 0) map.remove(e*2);
+                        else map.put(e, freq1-2);
+                        continue;
+                    }
+                    int freq2 = map.get(e*2);
+                    ans[index] = e; index++;
+                    if (freq1-1 == 0) map.remove(e);
+                    else map.put(e, freq1-1);
+                    if (freq2-1 == 0) map.remove(e*2);
+                    else map.put(e*2, freq2-1);
+                }
+            }
+            if (index == ans.length) break;
         }
+        if (!map.isEmpty()) return new int[]{};
+        return ans;
     }
 }
