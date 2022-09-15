@@ -1,39 +1,27 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Arrays;
 
 public class GFGStreak {
     public static void main(String[] args) {
-        ArrayList<Long> list = new ArrayList<>();
-        list.add(3L); list.add(5L); list.add(7L);
-        System.out.println(numberOfSubsequences(list.size(), list));
+        int[] arr = {20, 2};
+        System.out.println(minSubset(arr, arr.length));
     }
 
-    static Set<Long> set = new HashSet<>();
-    static ArrayList<Long> ansList = new ArrayList<>();
-
-    static Long numberOfSubsequences(int N, ArrayList<Long> A){
-        long ans = 0;
-        subseq(A, 0, 1);
-        for (long e : ansList) {
-            double d = Math.log10(e)/Math.log10(2);
-            if (d == (long)d) ans++;
+    static int minSubset(int[] Arr,int N) {
+        long sum=0;
+        Arrays.sort(Arr);
+        for(int i=0;i<N;i++){
+            sum+=Arr[i];
         }
-        return ans-1;
-    }
-
-    static void subseq(ArrayList<Long> list, int i, long value) {
-        if (i == list.size()) {
-            ansList.add(value);
-            return;
+        long res=0;
+        for(int i=N-1;i>=0;i--){
+            res+=Arr[i];
+            sum-=Arr[i];
+            if(res>sum){
+                return N-i;
+            }
         }
-
-        double d = Math.log10(value) / Math.log10(2);
-        if (d != (long) d) return;
-
-        subseq(list, i+1, value * list.get(i));
-        subseq(list, i+1, value);
+        return N;
     }
 }
