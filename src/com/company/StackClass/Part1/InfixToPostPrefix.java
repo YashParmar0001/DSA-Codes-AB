@@ -4,7 +4,7 @@ import java.util.ArrayDeque;
 
 public class InfixToPostPrefix {
     public static void main(String[] args) {
-        String infix = "(2*3)-(4/8-6+7)";
+        String infix = "A+(B*C-(D/E*F)*G)*H";
         System.out.println(infixToPostfix(infix));
         System.out.println(infixToPrefix(infix));
         System.out.println(evaluatePostfix(infixToPostfix(infix)));
