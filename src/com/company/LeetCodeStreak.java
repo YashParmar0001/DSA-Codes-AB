@@ -1,42 +1,29 @@
 package com.company;
 
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class LeetCodeStreak {
     public static void main(String[] args) {
-        String s = "yas";
-        Pattern p = Pattern.compile(".y");
-        Matcher m = p.matcher(s);
-        System.out.println(Pattern.matches(".h", "sh"));
-//        System.out.println(palindromePairs(new String[]{"abcd","dcba","lls","s","sssll"}));
+
     }
 
-    static List<List<Integer>> palindromePairs(String[] words) {
-        List<List<Integer>> ans = new ArrayList<>();
-        for (int i = 0; i < words.length; i++) {
-            for (int j = 0; j < words.length; j++) {
-                if (i != j) {
-                    String one = words[i] + words[j];
-                    if (isPalindrome(one)) {
-                        List<Integer> temp = new ArrayList<>();
-                        temp.add(i); temp.add(j);
-                        ans.add(temp);
-                    }
-                }
-            }
+    static int trap(int[] height) {
+        int[] leftMax = new int[height.length];
+        int[] rightMax = new int[height.length];
+
+        leftMax[0] = height[0];
+        for (int i = 1; i < height.length; i++) {
+            leftMax[i] = Math.max(leftMax[i-1], height[i]);
         }
+
+        rightMax[height.length-1] = height[height.length-1];
+        for (int i = height.length-2; i >= 0; i--) {
+            rightMax[i] = Math.max(rightMax[i+1], height[i]);
+        }
+
+        int ans = 0;
+        for (int i = 0; i < height.length; i++) {
+            ans += Math.min(leftMax[i], rightMax[i]) - height[i];
+        }
+
         return ans;
-    }
-
-    static boolean isPalindrome(String s) {
-        int i = 0, j = s.length()-1;
-        char[] str = s.toCharArray();
-        while (i < j) {
-            if (str[i] != str[j]) return false;
-            i++; j--;
-        }
-        return true;
     }
 }
