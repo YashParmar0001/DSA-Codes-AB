@@ -1,29 +1,27 @@
 package com.company;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GFGStreak {
     public static void main(String[] args) {
-
+        int[] arr = {1, 6, 2};
+        System.out.println(leftSmaller(arr.length, arr));
     }
 
-    public static int minimumSwaps(int[] c, int[] v,int n,int k,int b,int t) {
-        // code here
-        int swap=0;
-        int temp=0;
-        int cnt=0;
-        for(int i=n-1;i>=0;i--){
-            if(cnt<k){
-                int d=v[i]*t;
-                if(d>=b-c[i]){
-                    swap+=temp;
-                    cnt++;
-                }else{
-                    temp++;
-                }
+    static List<Integer> leftSmaller(int n, int arr[]) {
+        List<Integer> ans = new ArrayList<>(n);
+        ArrayDeque<Integer> stack = new ArrayDeque<>();
+        for (int e : arr) {
+            while (!stack.isEmpty() && stack.peek() >= e) {
+                stack.pop();
             }
+            if (stack.isEmpty()) ans.add(-1);
+            else ans.add(stack.peek());
+
+            stack.push(e);
         }
-        if(cnt<k)return -1;
-        return swap;
+        return ans;
     }
 }
