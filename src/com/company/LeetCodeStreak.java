@@ -1,34 +1,40 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class LeetCodeStreak {
     public static void main(String[] args) {
-        String[] paths = {"root/a 1.txt(abcd) 2.txt(efgh)","root/c 3.txt(abcd)",
-                "root/c/d 4.txt(efgh)","root 4.txt(efgh)"};
-        System.out.println(findDuplicate(paths));
+        int[] nums = {1, 2, 3, 4};
+        int[][] queries = {{1, 0}, {-3, 1}, {-4, 0}, {2, 3}};
+        System.out.println(Arrays.toString(sumEvenAfterQueries(nums, queries)));
     }
 
-    static List<List<String>> findDuplicate(String[] paths) {
-        Map<String, List<String>> map = new HashMap<>();
-        for (String path : paths) {
-            String[] values = path.split(" ");
-            for (int i = 1; i < values.length; i++) {
-                String[] name_cont = values[i].split("\\(");
-                name_cont[1] = name_cont[1].replace(")", "");
-                List<String> list = map.getOrDefault(name_cont[1], new ArrayList<>());
-                list.add(values[0] + "/" + name_cont[0]);
-                map.put(name_cont[1], list);
+    static int[] sumEvenAfterQueries(int[] nums, int[][] queries) {
+        nums[queries[0][1]] = nums[queries[0][1]] + queries[0][0];
+        int[] ans = new int[nums.length]; int index = 1;
+        int sum = 0;
+        for (int e : nums) {
+            if (e % 2 == 0) {
+                sum += e;
             }
         }
-        List<List<String>> ans = new ArrayList<>();
-        for (String key : map.keySet()) {
-            if (map.get(key).size() > 1) {
-                ans.add(map.get(key));
+        ans[0] = sum;
+        for (int i = 1; i < queries.length; i++) {
+            int[] querie = queries[i];
+            int n = nums[querie[1]];
+            nums[querie[1]] = nums[querie[1]] + querie[0];
+            if (n % 2 == 0) {
+                if (nums[querie[1]] % 2 == 0) {
+                    sum -= n;
+                    sum += nums[querie[1]];
+                }else {
+                    sum -= n;
+                }
+            }else {
+                if (nums[querie[1]] % 2 == 0) sum += nums[querie[1]];
             }
+            ans[index] = sum;
+            index++;
         }
         return ans;
     }
