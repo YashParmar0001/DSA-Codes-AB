@@ -1,6 +1,5 @@
 package com.company.Graphs.Part1;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DetectACycle {
@@ -15,17 +14,22 @@ public class DetectACycle {
         System.out.println(isCycle(6, graph.list));
     }
 
-    static boolean isCycle(int V, List<List<Integer>> adj) {
+    static Boolean isCycle(int V, List<List<Integer>> adj) {
         boolean[] visited = new boolean[V];
-        return detect(adj, 0, visited, -1);
+        for (int i = 0; i < V; i++) {
+            if (!visited[i]) {
+                if (detect(adj, i, visited, -1)) return true;
+            }
+        }
+        return false;
     }
 
-    static boolean detect(List<List<Integer>> list, int src, boolean[] visited, int parent) {
+    static Boolean detect(List<List<Integer>> list, int src, boolean[] visited, int parent) {
         visited[src] = true;
 
-        for (int neighbour : list.get(src)) {
+        for (Integer neighbour : list.get(src)) {
             if (!visited[neighbour]) {
-                return detect(list, neighbour, visited, src);
+                if (detect(list, neighbour, visited, src)) return true;
             }else if (neighbour != parent) {
                 return true;
             }

@@ -1,32 +1,32 @@
 package com.company;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GFGStreak {
     public static void main(String[] args) {
-        int[] arr = {1, 2, 3, 1, 4, 5, 2, 3, 6};
-        System.out.println(max_of_subarrays(arr, arr.length, 3));
+        String s = "44334521";
+        System.out.println(minLength(s, s.length()));
     }
 
-    static ArrayList<Integer> max_of_subarrays(int[] arr, int n, int k) {
-        ArrayList<Integer> ans = new ArrayList<>();
-        ArrayDeque<Integer> deque = new ArrayDeque<>();
-
-        for (int i = 0; i < n; i++) {
-            while (!deque.isEmpty() && deque.peek() < i - k + 1) {
-                deque.poll();
+    static int minLength(String s, int n) {
+        Set<String> set = new HashSet<>(Arrays.asList("12", "21", "34", "43", "56",
+                "65", "78", "87", "09", "90"));
+        ArrayDeque<Character> stack = new ArrayDeque<>();
+        int index = 1;
+        char[] digits = s.toCharArray();
+        stack.push(digits[0]);
+        while (index < s.length()) {
+            String digit = "" + stack.peek() + digits[index];
+            if (set.contains(digit)) {
+                stack.pop();
+            }else {
+                stack.push(digits[index]);
             }
-
-            while (!deque.isEmpty() && arr[deque.peekLast()] < arr[i]) {
-                deque.pollLast();
-            }
-
-            deque.offer(i);
-            if (i >= k-1) {
-                ans.add(arr[deque.peek()]);
-            }
+            index++;
         }
-        return ans;
+        return stack.size();
     }
 }
