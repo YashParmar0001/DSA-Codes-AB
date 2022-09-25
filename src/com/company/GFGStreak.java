@@ -1,32 +1,39 @@
 package com.company;
 
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 public class GFGStreak {
     public static void main(String[] args) {
-        String s = "44334521";
-        System.out.println(minLength(s, s.length()));
+
     }
 
-    static int minLength(String s, int n) {
-        Set<String> set = new HashSet<>(Arrays.asList("12", "21", "34", "43", "56",
-                "65", "78", "87", "09", "90"));
-        ArrayDeque<Character> stack = new ArrayDeque<>();
-        int index = 1;
-        char[] digits = s.toCharArray();
-        stack.push(digits[0]);
-        while (index < s.length()) {
-            String digit = "" + stack.peek() + digits[index];
-            if (set.contains(digit)) {
-                stack.pop();
-            }else {
-                stack.push(digits[index]);
+    public int[][] solveQueries(int n, int[][] Queries) {
+        // Code here
+        int a[][]=new int[n][n];
+        for(int i=0;i<Queries.length;i++){
+            int x1=Queries[i][0];
+            int y1=Queries[i][1];
+            int x2=Queries[i][2];
+            int y2=Queries[i][3];
+            a[x1][y1]++;
+            if(x2<n-1){
+                a[x2+1][y1]--;
             }
-            index++;
+            if(y2<n-1){
+                a[x1][y2+1]--;
+            }
+            if(x2<n-1 && y2<n-1){
+                a[x2+1][y2+1]++;
+            }
         }
-        return stack.size();
+        for(int i=0;i<n;i++){
+            for(int j=1;j<n;j++){
+                a[i][j]+=a[i][j-1];
+            }
+        }
+        for(int i=0;i<n;i++){
+            for(int j=1;j<n;j++){
+                a[j][i]+=a[j-1][i];
+            }
+        }
+        return a;
     }
 }
