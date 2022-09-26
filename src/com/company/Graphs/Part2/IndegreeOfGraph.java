@@ -18,7 +18,7 @@ public class IndegreeOfGraph {
 
 // This is a directed graph
 class GraphAdjList {
-    static List<List<Integer>> list = new ArrayList<>();
+    List<List<Integer>> list = new ArrayList<>();
     int v;
 
     public GraphAdjList(int v) {
