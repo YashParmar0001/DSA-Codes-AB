@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
-public class DijkstrasAlgorithm {
+public class DijkstraAlgorithm {
     public static void main(String[] args) {
         int v = 6;
         GraphDj graph = new GraphDj(v);
