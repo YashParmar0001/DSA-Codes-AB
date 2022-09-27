@@ -16,6 +16,7 @@ public class TopologicalSort {
         graph.addEdge(3, 4);
         graph.addEdge(3, 5);
         graph.addEdge(4, 5);
+        System.out.println(Arrays.toString(indegree(v, graph.adj)));
         System.out.println(Arrays.toString(topoSort1(v, graph.adj)));
         System.out.println(Arrays.toString(topoSort(v, graph.adj)));
     }
@@ -36,11 +37,12 @@ public class TopologicalSort {
         return ans;
     }
 
+    // Topological sort using BFS (Kahn's Algorithm)
     static int[] topoSort1(int v, ArrayList<ArrayList<Integer>> adj) {
-        int[] indegree = indegree(v, adj);
+        int[] inDegree = indegree(v, adj);
         Queue<Integer> queue = new ArrayDeque<>();
         for (int i = 0; i < v; i++) {
-            if (indegree[i] == 0) queue.offer(i);
+            if (inDegree[i] == 0) queue.offer(i);
         }
 
         int[] ans = new int[v]; int index = 0;
@@ -48,8 +50,8 @@ public class TopologicalSort {
             int current = queue.poll();
             ans[index] = current; index++;
             for (int neighbour : adj.get(current)) {
-                indegree[neighbour]--;
-                if (indegree[neighbour] == 0) {
+                inDegree[neighbour]--;
+                if (inDegree[neighbour] == 0) {
                     queue.offer(neighbour);
                 }
             }
