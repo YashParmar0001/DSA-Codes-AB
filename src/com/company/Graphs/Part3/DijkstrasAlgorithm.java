@@ -28,6 +28,8 @@ public class DijkstrasAlgorithm {
     static int[] dijkstra(int v, ArrayList<ArrayList<ArrayList<Integer>>> adj, int S) {
         int[] distance = new int[v];
         boolean[] visited = new boolean[v];
+        int[] parent = new int[v];
+        parent[S] = -1;
         PriorityQueue<ArrayList<Integer>> queue = new PriorityQueue<>(Comparator.comparingInt(p -> p.get(1)));
         Arrays.fill(distance, Integer.MAX_VALUE);
         distance[S] = 0;
@@ -43,11 +45,13 @@ public class DijkstrasAlgorithm {
                 if (!visited[neighbour.get(0)]) {
                     if (distance[neighbour.get(0)] > distance[current.get(0)] + neighbour.get(1)) {
                         distance[neighbour.get(0)] = distance[current.get(0)] + neighbour.get(1);
+                        parent[neighbour.get(0)] = current.get(0);
                         queue.offer(pair(neighbour.get(0), distance[neighbour.get(0)]));
                     }
                 }
             }
         }
+        System.out.println(Arrays.toString(parent));
         return distance;
     }
 }
