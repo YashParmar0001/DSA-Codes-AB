@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
-public class MinimumSpanningTree {
+public class PrimsMST {
     public static void main(String[] args) {
         int v = 5;
         Graph graph = new Graph(v);
