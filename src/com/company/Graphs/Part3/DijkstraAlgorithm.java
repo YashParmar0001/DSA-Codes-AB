@@ -16,6 +16,7 @@ public class DijkstraAlgorithm {
         graph.addEdge(1, 4, 2);
         graph.addEdge(2, 4, 1);
         graph.addEdge(3, 5, 3);
+        graph.addEdge(4, 5, 2);
         System.out.println(Arrays.toString(dijkstra(v, graph.adj, 0)));
     }
 
