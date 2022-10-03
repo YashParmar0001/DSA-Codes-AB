@@ -4,29 +4,34 @@ import java.util.*;
 
 public class GFGStreak {
     public static void main(String[] args) {
-        int[] arr = {2, 3, -1, 2, -2, 4, 1, 2, -1, -1};
-        System.out.println(goodStones(arr.length, arr));
+        int l = 1, r = 6;
+        System.out.println(sumOfAll(l, r));
     }
 
-    public static int goodStones(int n, int[] arr) {
-        int[] dp = new int[n];
-        Arrays.fill(dp, -1);
-        for (int i = 0; i < n; i++) {
-            goodStonesDP(i, arr, dp);
+    static int sumOfAll(int l, int r) {
+        int totalSum = 0;
+        if (l == 1) {
+            totalSum += 1;
+            l++;
         }
-        int ans = 0;
-        for (int i = 0; i < n; i++) {
-            if (dp[i] > 0) ans++;
+        for (int x = l ; x <= r; x++){
+            int sum = 0;
+            boolean[] isPrime = new boolean[x+1];
+            Arrays.fill(isPrime, true);
+
+            for (int i = 2; i * i <= x; i++) {
+                if(isPrime[i]) {
+                    if (x % i == 0) sum += i;
+                    for (int j = i * i; j <= x; j += i) {
+                        isPrime[j] = false;
+                    }
+                }
+            }
+            for (int i = 2; i < isPrime.length; i++) {
+                if (isPrime[i]&& x%i == 0) sum += i ;
+            }
+            totalSum += sum;
         }
-        return ans;
-    }
-
-    static int goodStonesDP(int current, int[] arr, int[] dp) {
-        if (current < 0 || current >= arr.length) return 1;
-        else if (dp[current] >= 0) return dp[current];
-
-        dp[current] = 0;
-        dp[current] += goodStonesDP(current + arr[current], arr, dp);
-        return dp[current];
+        return totalSum;
     }
 }
