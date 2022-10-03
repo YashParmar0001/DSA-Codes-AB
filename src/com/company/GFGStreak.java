@@ -1,24 +1,32 @@
 package com.company;
 
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class GFGStreak {
     public static void main(String[] args) {
-
+        int[] arr = {2, 3, -1, 2, -2, 4, 1, 2, -1, -1};
+        System.out.println(goodStones(arr.length, arr));
     }
 
-    long minCost(long arr[], int n) {
-        PriorityQueue<Long> queue = new PriorityQueue<>();
-        for (long e : arr) {
-            queue.offer(e);
+    public static int goodStones(int n, int[] arr) {
+        int[] dp = new int[n];
+        Arrays.fill(dp, -1);
+        for (int i = 0; i < n; i++) {
+            goodStonesDP(i, arr, dp);
         }
-        long cost = 0;
-        while (queue.size() > 1) {
-            long first = queue.poll();
-            long second = queue.poll();
-            cost += first + second;
-            queue.offer(first + second);
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            if (dp[i] > 0) ans++;
         }
-        return cost;
+        return ans;
+    }
+
+    static int goodStonesDP(int current, int[] arr, int[] dp) {
+        if (current < 0 || current >= arr.length) return 1;
+        else if (dp[current] >= 0) return dp[current];
+
+        dp[current] = 0;
+        dp[current] += goodStonesDP(current + arr[current], arr, dp);
+        return dp[current];
     }
 }

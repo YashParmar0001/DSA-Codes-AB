@@ -1,33 +1,41 @@
 package com.company;
 
-import java.util.*;
+import java.util.Arrays;
 
 public class LeetCodeStreak {
     public static void main(String[] args) {
-        int[] arr = {0,0,1,2,3,3,4,7,7,8};
-        int k = 3;
-        int x = 5;
-        System.out.println(findClosestElements(arr, k, x));
+        int n = 30, k = 30, target = 500;
+        System.out.println(numRollsToTarget(n, k, target));
     }
 
-    static List<Integer> findClosestElements(int[] arr, int k, int x) {
-        PriorityQueue<Integer> queue = new PriorityQueue<>((a, b) -> {
-            if (Math.abs(a - x) < Math.abs(b-x)) {
-                return -1;
-            }else if (Math.abs(a-x) > Math.abs(b-x)) {
-                return 1;
-            }else return a.compareTo(b);
-        });
-        for (int e : arr) {
-            queue.offer(e);
+    // Simple recursion
+//    static int numRollsToTarget(int n, int k, int target) {
+//        if (n == 0) {
+//            if (target == 0) ans++;
+//            return 0;
+//        }
+//        for (int i = 1; i <= k; i++) {
+//            numRollsToTarget(n-1, k, target-i);
+//        }
+//        return ans;
+//    }
+
+    static int numRollsToTarget(int n, int k, int target) {
+        int[][] dp = new int[n+1][target+1];
+        for (int[] row : dp) Arrays.fill(row, -1);
+        return numRollsDP(n, k, target, dp);
+    }
+
+    static int numRollsDP(int n, int k, int target, int[][] dp) {
+        // Base case
+        if (n == 0 || target < 0) return (target == 0) ? 1 : 0;
+
+        if (dp[n][target] != -1) return dp[n][target];
+
+        int ways = 0;
+        for (int i = 1; i <= k; i++) {
+            ways = (ways + numRollsDP(n-1, k, target-i, dp)) % 1000000007;
         }
-        int index = 0;
-        List<Integer> list = new ArrayList<>(k);
-        while (!queue.isEmpty() && index < k) {
-            list.add(queue.poll());
-            index++;
-        }
-        Collections.sort(list);
-        return list;
+        return dp[n][target] = ways;
     }
 }
