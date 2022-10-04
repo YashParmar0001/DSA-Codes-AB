@@ -1,37 +1,35 @@
 package com.company;
 
-import java.util.*;
+import java.util.Arrays;
 
 public class GFGStreak {
     public static void main(String[] args) {
-        int l = 1, r = 6;
-        System.out.println(sumOfAll(l, r));
+        int m = 5, n = 5; // 690285631
+        System.out.println(numberOfPaths(m, n));
     }
 
-    static int sumOfAll(int l, int r) {
-        int totalSum = 0;
-        if (l == 1) {
-            totalSum += 1;
-            l++;
-        }
-        for (int x = l ; x <= r; x++){
-            int sum = 0;
-            boolean[] isPrime = new boolean[x+1];
-            Arrays.fill(isPrime, true);
+    static long numberOfPaths(int m, int n) {
+        long[][] dp = new long[m+1][n+1];
+        numberOfPaths5(m, n, dp);
 
-            for (int i = 2; i * i <= x; i++) {
-                if(isPrime[i]) {
-                    if (x % i == 0) sum += i;
-                    for (int j = i * i; j <= x; j += i) {
-                        isPrime[j] = false;
-                    }
-                }
-            }
-            for (int i = 2; i < isPrime.length; i++) {
-                if (isPrime[i]&& x%i == 0) sum += i ;
-            }
-            totalSum += sum;
+        for (int i = 0; i<m+1; i++){
+            System.out.println(Arrays.toString(dp[i]));
         }
-        return totalSum;
+        return dp[m][n];
+    }
+
+    static void numberOfPaths5(int m, int n, long[][] dp){
+        if (dp[m][n] != 0){
+            return;
+        }
+        if (m == 1 && n == 1) {
+            dp[m][n] = 1;
+            return;
+        }
+        if (m < 1) return ;
+        if (n < 1) return ;
+        numberOfPaths5(m-1, n, dp);
+        numberOfPaths5(m, n-1, dp );
+        dp[m][n] = (dp[m-1][n]%1000000007 + dp[m][n-1]%1000000007)%1000000007;
     }
 }
