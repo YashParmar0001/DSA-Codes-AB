@@ -1,41 +1,39 @@
 package com.company;
 
-import java.util.Arrays;
+import java.util.HashMap;
 
 public class LeetCodeStreak {
     public static void main(String[] args) {
-        int n = 30, k = 30, target = 500;
-        System.out.println(numRollsToTarget(n, k, target));
+        TimeMap map = new TimeMap();
+        map.set("foo", "bar", 1);
+        System.out.println(map.get("foo", 1));
+        System.out.println(map.get("foo", 2));
+        System.out.println(map.get("foo", 5));
+        map.set("foo", "bar2", 3);
+        System.out.println(map.get("foo", 5));
+    }
+}
+
+class TimeMap {
+    HashMap<String, HashMap<Integer, String>> map;
+
+    public TimeMap() {
+        map = new HashMap<>();
     }
 
-    // Simple recursion
-//    static int numRollsToTarget(int n, int k, int target) {
-//        if (n == 0) {
-//            if (target == 0) ans++;
-//            return 0;
-//        }
-//        for (int i = 1; i <= k; i++) {
-//            numRollsToTarget(n-1, k, target-i);
-//        }
-//        return ans;
-//    }
-
-    static int numRollsToTarget(int n, int k, int target) {
-        int[][] dp = new int[n+1][target+1];
-        for (int[] row : dp) Arrays.fill(row, -1);
-        return numRollsDP(n, k, target, dp);
-    }
-
-    static int numRollsDP(int n, int k, int target, int[][] dp) {
-        // Base case
-        if (n == 0 || target < 0) return (target == 0) ? 1 : 0;
-
-        if (dp[n][target] != -1) return dp[n][target];
-
-        int ways = 0;
-        for (int i = 1; i <= k; i++) {
-            ways = (ways + numRollsDP(n-1, k, target-i, dp)) % 1000000007;
+    public void set(String key, String value, int timestamp) {
+        if (!map.containsKey(key)) {
+            map.put(key, new HashMap<>());
         }
-        return dp[n][target] = ways;
+        map.get(key).put(timestamp, value);
+    }
+
+    public String get(String key, int timestamp) {
+        if (!map.containsKey(key)) return "";
+        while (timestamp > 0) {
+            if (map.get(key).containsKey(timestamp)) return map.get(key).get(timestamp);
+            timestamp--;
+        }
+        return "";
     }
 }
