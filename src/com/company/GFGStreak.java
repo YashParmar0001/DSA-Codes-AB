@@ -1,35 +1,52 @@
 package com.company;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
 
 public class GFGStreak {
     public static void main(String[] args) {
-        int m = 5, n = 5; // 690285631
-        System.out.println(numberOfPaths(m, n));
+        Node root = new Node(1);
+        root.left = new Node(3);
+        root.right = new Node(4);
+        root.right.left = new Node(2);
+        root.right.left.right = new Node(5);
+        flatten(root);
+        printLL(root);
     }
 
-    static long numberOfPaths(int m, int n) {
-        long[][] dp = new long[m+1][n+1];
-        numberOfPaths5(m, n, dp);
-
-        for (int i = 0; i<m+1; i++){
-            System.out.println(Arrays.toString(dp[i]));
+    static Node lastNode;
+    public static void flatten(Node root) {
+        if (root == null) return;
+        if (root.left == null && root.right == null) {
+            lastNode = root;
+            return;
         }
-        return dp[m][n];
+        if (root.left == null) {
+            flatten(root.right);
+        }else {
+            Node temp = root.right;
+            root.right = root.left;
+            root.left = null;
+            flatten(root.right);
+            if (temp != null) {
+                lastNode.right = temp;
+                flatten(lastNode.right);
+            }
+        }
     }
 
-    static void numberOfPaths5(int m, int n, long[][] dp){
-        if (dp[m][n] != 0){
-            return;
+    static void printLL(Node root) {
+        Node current = root;
+        while (current != null) {
+            System.out.print(current.data + " --> ");
+            current = current.right;
         }
-        if (m == 1 && n == 1) {
-            dp[m][n] = 1;
-            return;
-        }
-        if (m < 1) return ;
-        if (n < 1) return ;
-        numberOfPaths5(m-1, n, dp);
-        numberOfPaths5(m, n-1, dp );
-        dp[m][n] = (dp[m-1][n]%1000000007 + dp[m][n-1]%1000000007)%1000000007;
+        System.out.println(" NULL");
+    }
+
+    static class Node {
+        int data;
+        Node left, right;
+        public Node(int data) {this.data = data;}
     }
 }
