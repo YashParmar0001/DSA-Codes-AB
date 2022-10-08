@@ -7,6 +7,7 @@ public class GFGStreak {
     public static void main(String[] args) {
         String s = "rdsaugup"; int k = 5;
         System.out.println(countOfSubstrings(s, k));
+
     }
 
     static int countOfSubstrings(String s, int k) {
