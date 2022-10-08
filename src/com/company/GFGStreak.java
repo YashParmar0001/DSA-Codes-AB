@@ -1,52 +1,32 @@
 package com.company;
 
-import java.util.ArrayDeque;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GFGStreak {
     public static void main(String[] args) {
-        Node root = new Node(1);
-        root.left = new Node(3);
-        root.right = new Node(4);
-        root.right.left = new Node(2);
-        root.right.left.right = new Node(5);
-        flatten(root);
-        printLL(root);
+        String s = "rdsaugup"; int k = 5;
+        System.out.println(countOfSubstrings(s, k));
     }
 
-    static Node lastNode;
-    public static void flatten(Node root) {
-        if (root == null) return;
-        if (root.left == null && root.right == null) {
-            lastNode = root;
-            return;
-        }
-        if (root.left == null) {
-            flatten(root.right);
-        }else {
-            Node temp = root.right;
-            root.right = root.left;
-            root.left = null;
-            flatten(root.right);
-            if (temp != null) {
-                lastNode.right = temp;
-                flatten(lastNode.right);
+    static int countOfSubstrings(String s, int k) {
+        char[] str = s.toCharArray();
+        Map<Character, Integer> map = new HashMap<>();
+        int i = 0, j = 0;
+        int ans = 0;
+        while (j < s.length()) {
+            if (!map.containsKey(str[j])) {
+                map.put(str[j], 0);
+            }
+            map.put(str[j], map.get(str[j]) + 1);
+            j++;
+            if (j - i == k) {
+                if (map.size() == k-1) ans++;
+                map.put(str[i], map.get(str[i]) - 1);
+                if (map.get(str[i]) <= 0) map.remove(str[i]);
+                i++;
             }
         }
-    }
-
-    static void printLL(Node root) {
-        Node current = root;
-        while (current != null) {
-            System.out.print(current.data + " --> ");
-            current = current.right;
-        }
-        System.out.println(" NULL");
-    }
-
-    static class Node {
-        int data;
-        Node left, right;
-        public Node(int data) {this.data = data;}
+        return ans;
     }
 }
