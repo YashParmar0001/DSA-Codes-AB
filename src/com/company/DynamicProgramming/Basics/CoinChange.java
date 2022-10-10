@@ -4,10 +4,9 @@ import java.util.Arrays;
 
 public class CoinChange {
     public static void main(String[] args) {
-        int[] coins = {186,419,83,408};
-        int amount = 6249;
+        int[] coins = {1, 4, 5};
+        int amount = 10;
         System.out.println(coinChange1(coins, amount));
-        System.out.println(Integer.MIN_VALUE);
     }
 
     // Using DP

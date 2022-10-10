@@ -22,7 +22,7 @@ public class EquilibriumPoint {
         System.out.println(Arrays.toString(leftSum));
         System.out.println(Arrays.toString(rightSum));
         for (int i = 0; i < arr.length; i++) {
-            if (leftSum[i] == rightSum[i]) return i;
+            if (leftSum[i] == rightSum[i]) return i+1;
         }
         return -1;
     }

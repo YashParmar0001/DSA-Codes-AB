@@ -1,39 +1,26 @@
 package com.company;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class LeetCodeStreak {
     public static void main(String[] args) {
-        TimeMap map = new TimeMap();
-        map.set("foo", "bar", 1);
-        System.out.println(map.get("foo", 1));
-        System.out.println(map.get("foo", 2));
-        System.out.println(map.get("foo", 5));
-        map.set("foo", "bar2", 3);
-        System.out.println(map.get("foo", 5));
-    }
-}
-
-class TimeMap {
-    HashMap<String, HashMap<Integer, String>> map;
-
-    public TimeMap() {
-        map = new HashMap<>();
+        TreeNode root = new TreeNode(1);
+        System.out.println(findTarget(root, 1));
     }
 
-    public void set(String key, String value, int timestamp) {
-        if (!map.containsKey(key)) {
-            map.put(key, new HashMap<>());
-        }
-        map.get(key).put(timestamp, value);
+    static Set<Integer> set = new HashSet<>();
+    static boolean findTarget(TreeNode root, int k) {
+        if (root == null) return false;
+        if (set.contains(k - root.val)) return true;
+        set.add(root.val);
+        return findTarget(root.left, k) || findTarget(root.right, k);
     }
 
-    public String get(String key, int timestamp) {
-        if (!map.containsKey(key)) return "";
-        while (timestamp > 0) {
-            if (map.get(key).containsKey(timestamp)) return map.get(key).get(timestamp);
-            timestamp--;
-        }
-        return "";
+    static class TreeNode {
+        int val;
+        TreeNode left, right;
+        public TreeNode(int val) {this.val = val;}
     }
 }

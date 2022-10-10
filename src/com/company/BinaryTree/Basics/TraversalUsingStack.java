@@ -8,15 +8,16 @@ public class TraversalUsingStack {
     public static void main(String[] args) {
         TreeNode root = new TreeNode(1);
         root.left = new TreeNode(2);
-        root.right = new TreeNode(3);
-        root.left.left = new TreeNode(4);
-        root.left.right = new TreeNode(5);
+        root.right = new TreeNode(5);
+        root.left.left = new TreeNode(3);
+        root.left.right = new TreeNode(4);
+        root.right.right = new TreeNode(6);
 
 //        inOrderTraversal(root);
 //        System.out.println();
-//        preOrderTraversal(root);
+        preOrderTraversal(root);
 //        System.out.println();
-        System.out.println(postorderTraversal(root));
+//        System.out.println(postorderTraversal(root));
     }
 
     static void inOrderTraversal(Node root) {
@@ -39,15 +40,15 @@ public class TraversalUsingStack {
         }
     }
 
-    static void preOrderTraversal(Node root) {
+    static void preOrderTraversal(TreeNode root) {
         if (root == null) return;
 
-        ArrayDeque<Node> stack = new ArrayDeque<>();
-        Node current = root;
+        ArrayDeque<TreeNode> stack = new ArrayDeque<>();
+        TreeNode current = root;
 
         while (current != null || !stack.isEmpty()) {
             while (current != null) {
-                System.out.print(current.data + ", ");
+                System.out.print(current.val + ", ");
                 stack.push(current);
                 current = current.left;
             }
